@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Loan Approval Prediction</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #864AF9;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: #ffffff88;
+            padding: 30px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        .form-control {
+            border-radius: 0;
+        }
+
+        .btn-primary {
+            border-radius: 0;
+            display: block;
+            margin: 0 auto;
+            background-color: #370353; 
+            border-color: #370353;
+        }
+
+        .prediction {
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 30px;
+        }
+        
+        .header-image {
+            width: 100%;
+            max-height: 200px;
+            object-fit: cover; 
+        }
+
+        .logo {
+            max-width: 50%; 
+            display: block;
+            margin: 0 auto; 
+            margin-bottom: 20px; 
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Loan Approval Prediction</h1>
+        <form action="{{ url_for('predict') }}" method="POST">
+            <div class="form-group">
+                <label for="CreditType">Credit Type:</label>
+                <select class="form-control" id="CreditType" name="CreditType" required>
+                    <option value="0">Individual</option>
+                    <option value="1">Joint</option>
+                </select>
+           </div>
+
+            <div class="form-group">
+                <label for="JobHours">Job Hours:</label>
+                <input type="number" class="form-control" id="JobHours" name="JobHours" required>
+            </div>
+
+            <div class="form-group">
+                <label for="Income">Income:</label>
+                <input type="number" class="form-control" id="Income" name="Income" required>
+            </div>
+
+            <div class="form-group">
+                <label for="LTV">Loan-to-Value (LTV):</label>
+                <input type="number" class="form-control" id="LTV" name="LTV" required>
+            </div>
+
+            <div class="form-group">
+                <label for="Term">Term:</label>
+                <input type="number" class="form-control" id="Term" name="Term" required>
+            </div>
+
+            <div class="form-group">
+                <label for="Price">Price:</label>
+                <input type="number" class="form-control" id="Price" name="Price" required>
+            </div>
+
+            <div class="form-group">
+                <label for="Downpayment">Downpayment:</label>
+                <input type="number" class="form-control" id="Downpayment" name="Downpayment" required>
+            </div>
+
+            <div class="form-group">
+                <label for="BookValue">Book Value:</label>
+                <input type="number" class="form-control" id="BookValue" name="BookValue" required>
+            </div>
+
+            <div class="form-group">
+                <label for="AmountFinanced">Amount Financed:</label>
+                <input type="number" class="form-control" id="AmountFinanced" name="AmountFinanced" required>
+            </div>
+
+            <div class="form-group">
+                <label for="APR">APR:</label>
+                <input type="number" class="form-control" id="APR" name="APR" required>
+            </div>
+
+            <div class="form-group">
+                <label for="MonthlyPayment">Monthly Payment:</label>
+                <input type="number" class="form-control" id="MonthlyPayment" name="MonthlyPayment" required>
+            </div>
+
+            <div class="form-group">
+                <label for="MonthlyDedt">Monthly Dedt:</label>
+                <input type="number" class="form-control" id="MonthlyDedt" name="MonthlyDedt" required>
+            </div>
+
+            <div class="form-group">
+                <label for="NoOfTradelines">Number of Tradelines:</label>
+                <input type="number" class="form-control" id="NoOfTradelines" name="NoOfTradelines" required>
+            </div>
+
+            <div class="form-group">
+                <label for="FICO">FICO Score:</label>
+                <input type="number" class="form-control" id="FICO" name="FICO" required>
+            </div>
+
+            <div class="form-group">
+                <label for="ClearFraudScore">ClearFraud Score:</label>
+                <input type="number" class="form-control" id="ClearFraudScore" name="ClearFraudScore" required>
+            </div>
+
+            <div class="form-group">
+                <label for="VehicleYear">Vehicle Year:</label>
+                <input type="number" class="form-control" id="VehicleYear" name="VehicleYear" required>
+            </div>
+
+            <div class="form-group">
+                <label for="VehicleAge">Vehicle Age:</label>
+                <input type="number" class="form-control" id="VehicleAge" name="VehicleAge" required>
+            </div>
+
+            <div class="form-group">
+                <label for="VehicleMiles">Vehicle Miles:</label>
+                <input type="number" class="form-control" id="VehicleMiles" name="VehicleMiles" required>
+            </div>
+
+            <div class="form-group">
+                <label for="DTI">Debt-to-Income Ratio (DTI):</label>
+                <input type="number" class="form-control" id="DTI" name="DTI" required>
+            </div>
+
+            <div class="form-group">
+                <label for="LTVDP">LTV Downpayment:</label>
+                <input type="number" class="form-control" id="LTVDP" name="LTVDP" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Predict</button>
+        </form>
+
+        {% if prediction_text %}
+        <div class="prediction">
+            Loan Approval Prediction: {{ prediction_text }}
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
